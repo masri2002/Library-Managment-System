@@ -14,13 +14,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - name: Install Microsoft OpenJDK 17
+
+    - name: Set up Microsoft JDK 17 manually
       run: |
         wget <ACTUAL_DOWNLOAD_URL> -O microsoft-jdk-17.tar.gz
         tar -xzf microsoft-jdk-17.tar.gz
