@@ -20,15 +20,8 @@ jobs:
       uses: actions/setup-java@v3
       with:
         java-version: 17
-        distribution: adoptium
-        java-package: jdk
+        distribution: adoptium  # Use 'adoptium' or 'zulu' if preferred
         check-latest: false
-        server-id: github
-        server-username: ${{ secrets.GITHUB_ACTOR }}
-        server-password: ${{ secrets.GITHUB_TOKEN }}
-        overwrite-settings: true
-        job-status: success
-        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build with Maven
       run: mvn clean install
