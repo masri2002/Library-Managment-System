@@ -3,10 +3,10 @@ name: Java CI
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -16,12 +16,15 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up Java 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: 17
-        distribution: adoptium  # Use 'adoptium' or 'zulu' if preferred
-        check-latest: false
+    - name: Install Microsoft OpenJDK 17
+      run: |
+        wget https://aka.ms/gjdk -O microsoft-jdk-17.tar.gz
+        tar -xzf microsoft-jdk-17.tar.gz
+        sudo mv jdk-17 /usr/lib/jvm/microsoft-jdk-17
+        sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/microsoft-jdk-17/bin/java 1
+        sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/microsoft-jdk-17/bin/javac 1
+        sudo update-alternatives --install /usr/bin/javaws javaws /usr/lib/jvm/microsoft-jdk-17/bin/javaws 1
+        java -version
 
     - name: Build with Maven
       run: mvn clean install
