@@ -28,29 +28,40 @@ jobs:
           --health-retries=5
 
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup Java JDK
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Java JDK
       uses: actions/setup-java@v4
       with:
         java-version: '17'
         distribution: 'temurin'
         cache: 'maven'
 
-    - name: Set up PostgreSQL Database Connection
+    - name: Set environment variables
       run: |
-        echo "spring.datasource.url=${{ secrets.DB_URL }}" >> src/main/resources/application.properties
-        echo "spring.datasource.username=${{ secrets.DB_USERNAME }}" >> src/main/resources/application.properties
-        echo "spring.datasource.password=${{ secrets.DB_PASSWORD }}" >> src/main/resources/application.properties
-        echo "spring.mail.host=${{ secrets.MAIL_HOST }}" >> src/main/resources/application.properties
-        echo "spring.mail.port=${{ secrets.MAIL_PORT }}" >> src/main/resources/application.properties
-        echo "spring.mail.username=${{ secrets.MAIL_USERNAME }}" >> src/main/resources/application.properties
-        echo "spring.mail.password=${{ secrets.MAIL_PASSWORD }}" >> src/main/resources/application.properties
+        echo "SPRING_DATASOURCE_URL=${{ secrets.DB_URL }}" >> $GITHUB_ENV
+        echo "SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }}" >> $GITHUB_ENV
+        echo "SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
+        echo "SPRING_MAIL_HOST=${{ secrets.MAIL_HOST }}" >> $GITHUB_ENV
+        echo "SPRING_MAIL_PORT=${{ secrets.MAIL_PORT }}" >> $GITHUB_ENV
+        echo "SPRING_MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> $GITHUB_ENV
+        echo "SPRING_MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> $GITHUB_ENV
+
+    - name: Print Environment Variables
+      run: |
+        echo "SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}"
+        echo "SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}"
+        echo "SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}"
+        echo "SPRING_MAIL_HOST=${SPRING_MAIL_HOST}"
+        echo "SPRING_MAIL_PORT=${SPRING_MAIL_PORT}"
+        echo "SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME}"
+        echo "SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD}"
 
     - name: Build with Maven
       run: mvn clean install -B
 
-    - name: Run tests
+    - name: Run tests with Debug Logging
       run: mvn test -X
 
     - name: Upload JUnit test results
