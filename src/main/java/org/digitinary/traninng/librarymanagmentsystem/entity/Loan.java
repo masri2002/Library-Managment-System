@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Table(name = "loans")
 @NoArgsConstructor
 public class Loan {
- private int id;
+ private Long id;
  private User user;
  private Book book;
  private LocalDate formDate;
@@ -25,14 +25,14 @@ public class Loan {
     @Id
      @GeneratedValue(strategy = GenerationType.SEQUENCE)
      @SequenceGenerator(name = "loan_id_generator")
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     public User getUser() {
         return user;

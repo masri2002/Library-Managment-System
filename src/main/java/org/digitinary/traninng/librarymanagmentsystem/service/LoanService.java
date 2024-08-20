@@ -1,5 +1,6 @@
 package org.digitinary.traninng.librarymanagmentsystem.service;
 
+import jakarta.transaction.Transactional;
 import org.digitinary.traninng.librarymanagmentsystem.entity.Book;
 import org.digitinary.traninng.librarymanagmentsystem.entity.Loan;
 import org.digitinary.traninng.librarymanagmentsystem.mapper.BookMapper;
@@ -22,8 +23,8 @@ public class LoanService {
         this.userMapper = userMapper;
         this.bookMapper = bookMapper;
     }
-
-    public Loan createLoan(Loan loan, UserModel userModel,Long id) {
+    @Transactional
+    public void createLoan(Loan loan, UserModel userModel, Long id) {
         if(bookService.isInStock(id)){
             BookModel model=bookService.getBookById(id);
             model.setInStock(false);
@@ -34,11 +35,12 @@ public class LoanService {
             throw new RuntimeException("Book Already Loaned");
         }
         loan.addUserToLoan(userMapper.userModelToUser(userModel));
-        return loanRepository.save(loan);
+        loanRepository.save(loan);
     }
     public Loan getLoanById(Long id) {
         return loanRepository.findById(id).orElseThrow(()-> new RuntimeException("No loan found with id: " + id));
     }
+    @Transactional
     public void deleteLoanById(Long id) {
         Loan loan = getLoanById(id);
         Book book =loan.getBook();
@@ -46,5 +48,8 @@ public class LoanService {
         bookService.UpdateBook(book);
         loanRepository.delete(loan);
 
+    }
+    public void updateLoan(Loan loan){
+        loanRepository.save(loan);
     }
 }

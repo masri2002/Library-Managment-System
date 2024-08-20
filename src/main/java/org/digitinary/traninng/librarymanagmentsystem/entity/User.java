@@ -4,6 +4,8 @@ package org.digitinary.traninng.librarymanagmentsystem.entity;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Entity
 @NoArgsConstructor
 @Table(name = "users")
@@ -12,7 +14,7 @@ public class User {
     private String name;
     private String email;
     private String phoneNumber;
-
+    private Set<Loan> loans;
     public User(Long id, String name, String email, String phoneNumber) {
         this.id = id;
         this.name = name;
@@ -51,5 +53,13 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+    @OneToMany(mappedBy = "user")
+    public Set<Loan> getLoans() {
+        return loans;
+    }
+
+    public void setLoans(Set<Loan> loans) {
+        this.loans = loans;
     }
 }
