@@ -1,6 +1,8 @@
 package org.digitinary.traninng.librarymanagmentsystem.controller;
 
 import jakarta.validation.Valid;
+import org.digitinary.traninng.librarymanagmentsystem.entity.Loan;
+import org.digitinary.traninng.librarymanagmentsystem.entity.User;
 import org.digitinary.traninng.librarymanagmentsystem.model.UserModel;
 import org.digitinary.traninng.librarymanagmentsystem.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -22,5 +24,10 @@ public class UserController {
      @PostMapping
      public ResponseEntity<?> addUser(@Valid @RequestBody UserModel user) {
         return ResponseEntity.ok(userService.addUser(user));
+     }
+     @PostMapping("/{uId}/loanBook/{bId}")
+    public ResponseEntity<?> loanBookById(@PathVariable Long uId, @PathVariable Long bId, @RequestBody Loan loan){
+        userService.loanBook(uId,bId,loan);
+        return ResponseEntity.ok("Book Loaned");
      }
 }

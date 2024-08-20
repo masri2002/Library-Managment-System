@@ -38,5 +38,11 @@ private final BookMapper bookMapper;
     public void deleteBookById(Long id) {
         bookRepository.deleteById(id);
     }
+    public boolean isInStock(Long id){
+        return bookRepository.inStockById(id);
+    }
+    public void UpdateBook(Book book){
+        bookRepository.save(book);
+    }
 
 }
