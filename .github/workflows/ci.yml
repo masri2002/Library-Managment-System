@@ -22,16 +22,6 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Set up Microsoft JDK 17 manually
-      run: |
-        wget <ACTUAL_DOWNLOAD_URL> -O microsoft-jdk-17.tar.gz
-        tar -xzf microsoft-jdk-17.tar.gz
-        sudo mv jdk-17 /usr/lib/jvm/microsoft-jdk-17
-        sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/microsoft-jdk-17/bin/java 1
-        sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/microsoft-jdk-17/bin/javac 1
-        sudo update-alternatives --install /usr/bin/javaws javaws /usr/lib/jvm/microsoft-jdk-17/bin/javaws 1
-        java -version
-
     - name: Build with Maven
       run: mvn clean install
 
