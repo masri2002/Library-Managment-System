@@ -47,7 +47,7 @@ jobs:
       run: mvn clean install -B
 
     - name: Run tests
-      run: mvn test -B
+      run: mvn test -X
 
     - name: Upload JUnit test results
       uses: actions/upload-artifact@v3
