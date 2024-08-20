@@ -7,7 +7,6 @@ import org.digitinary.traninng.librarymanagmentsystem.mapper.UserMapper;
 import org.digitinary.traninng.librarymanagmentsystem.model.BookModel;
 import org.digitinary.traninng.librarymanagmentsystem.model.UserModel;
 import org.digitinary.traninng.librarymanagmentsystem.repository.LoanRepository;
-import org.digitinary.traninng.librarymanagmentsystem.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
