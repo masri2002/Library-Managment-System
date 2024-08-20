@@ -18,7 +18,7 @@ jobs:
 
     - name: Install Microsoft OpenJDK 17
       run: |
-        wget https://download.visualstudio.microsoft.com/download/pr/xxxxxx -O microsoft-jdk-17.tar.gz
+        wget <ACTUAL_DOWNLOAD_URL> -O microsoft-jdk-17.tar.gz
         tar -xzf microsoft-jdk-17.tar.gz
         sudo mv jdk-17 /usr/lib/jvm/microsoft-jdk-17
         sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/microsoft-jdk-17/bin/java 1
