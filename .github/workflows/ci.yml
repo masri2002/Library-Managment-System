@@ -19,14 +19,14 @@ jobs:
       uses: actions/setup-java@v4.2.2
       with:
         java-version: '17'
-        distribution: 'temurin'  # Specify the distribution. E.g., 'temurin', 'zulu', 'microsoft'
-        cache: 'maven'           # Enable caching for Maven dependencies
+        distribution: 'temurin'
+        cache: 'maven'
 
     - name: Build with Maven
-      run: mvn clean install
+      run: mvn clean install -e
 
-    - name: Run tests
-      run: mvn test
+    - name: Run tests with debug logs
+      run: mvn test -X
 
     - name: Upload JUnit test results
       uses: actions/upload-artifact@v3
