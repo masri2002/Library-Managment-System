@@ -7,8 +7,13 @@ import org.digitinary.traninng.librarymanagmentsystem.mapper.BookMapper;
 import org.digitinary.traninng.librarymanagmentsystem.mapper.UserMapper;
 import org.digitinary.traninng.librarymanagmentsystem.model.BookModel;
 import org.digitinary.traninng.librarymanagmentsystem.model.UserModel;
+import org.digitinary.traninng.librarymanagmentsystem.notifire.EmailNotificationService;
+import org.digitinary.traninng.librarymanagmentsystem.notifire.EventManager;
 import org.digitinary.traninng.librarymanagmentsystem.repository.LoanRepository;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class LoanService {
@@ -16,13 +21,18 @@ public class LoanService {
  private final BookService bookService;
  private final UserMapper userMapper;
  private final BookMapper bookMapper;
-
-    public LoanService(LoanRepository loanRepository, BookService bookService, UserMapper userMapper, BookMapper bookMapper) {
+ private  EventManager eventManager;
+private EmailNotificationService emailNotificationService;
+    public LoanService(LoanRepository loanRepository, BookService bookService, UserMapper userMapper, BookMapper bookMapper, EmailNotificationService emailNotificationService) {
         this.loanRepository = loanRepository;
         this.bookService = bookService;
         this.userMapper = userMapper;
         this.bookMapper = bookMapper;
+        this.emailNotificationService=emailNotificationService;
+        this.eventManager=new EventManager();
+        this.eventManager.subscribe(emailNotificationService);
     }
+
     @Transactional
     public void createLoan(Loan loan, UserModel userModel, Long id) {
         if(bookService.isInStock(id)){
@@ -51,5 +61,13 @@ public class LoanService {
     }
     public void updateLoan(Loan loan){
         loanRepository.save(loan);
+    }
+    public void checkAndNotifyOverdueLoans() {
+        List<Loan> overdueLoans = loanRepository.findAll()
+                .stream()
+                .filter(loan -> loan.getReturnDate().isBefore(LocalDate.now()))
+                .toList();
+
+        overdueLoans.forEach(eventManager::notifySubscribers);
     }
 }
