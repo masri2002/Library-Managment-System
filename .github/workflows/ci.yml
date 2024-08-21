@@ -1,6 +1,31 @@
+name: Java CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: jpa
+          POSTGRES_USER: ahmad
+          POSTGRES_PASSWORD: root
+        options: >-
+          --health-cmd="pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
     - name: Checkout code
@@ -22,16 +47,6 @@ jobs:
         echo "SPRING_MAIL_PORT=${{ secrets.MAIL_PORT }}" >> $GITHUB_ENV
         echo "SPRING_MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> $GITHUB_ENV
         echo "SPRING_MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> $GITHUB_ENV
-
-    - name: Print Environment Variables
-      run: |
-        echo "SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}"
-        echo "SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}"
-        echo "SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}"
-        echo "SPRING_MAIL_HOST=${SPRING_MAIL_HOST}"
-        echo "SPRING_MAIL_PORT=${SPRING_MAIL_PORT}"
-        echo "SPRING_MAIL_USERNAME=${SPRING_MAIL_USERNAME}"
-        echo "SPRING_MAIL_PASSWORD=${SPRING_MAIL_PASSWORD}"
 
     - name: Build with Maven
       run: mvn clean install -B
