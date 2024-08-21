@@ -23,6 +23,7 @@ public class User {
     }
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(allocationSize = 1,name = "User_id_Generation")
     public Long getId() {
         return id;
     }

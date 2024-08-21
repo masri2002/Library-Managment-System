@@ -10,6 +10,10 @@ import org.digitinary.traninng.librarymanagmentsystem.model.UserModel;
 import org.digitinary.traninng.librarymanagmentsystem.notifire.EmailNotificationService;
 import org.digitinary.traninng.librarymanagmentsystem.notifire.EventManager;
 import org.digitinary.traninng.librarymanagmentsystem.repository.LoanRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,14 +26,13 @@ public class LoanService {
  private final UserMapper userMapper;
  private final BookMapper bookMapper;
  private  EventManager eventManager;
- private EmailNotificationService emailNotificationService;
+
 
     public LoanService(LoanRepository loanRepository, BookService bookService, UserMapper userMapper, BookMapper bookMapper, EmailNotificationService emailNotificationService) {
         this.loanRepository = loanRepository;
         this.bookService = bookService;
         this.userMapper = userMapper;
         this.bookMapper = bookMapper;
-        this.emailNotificationService=emailNotificationService;
         this.eventManager=new EventManager();
         this.eventManager.subscribe(emailNotificationService);
     }
@@ -63,12 +66,15 @@ public class LoanService {
     public void updateLoan(Loan loan){
         loanRepository.save(loan);
     }
+
     public void checkAndNotifyOverdueLoans() {
-        List<Loan> overdueLoans = loanRepository.findAll()
-                .stream()
-                .filter(loan -> loan.getReturnDate().isBefore(LocalDate.now()))
-                .toList();
+        List<Loan> overdueLoans = loanRepository.findByReturnDateBefore(LocalDate.now());
 
         overdueLoans.forEach(eventManager::notifySubscribers);
+    }
+
+    public Page<Loan> getLoansWithPaginationAndSorting(int offset, int pageSize, String sortBy, LocalDate returnDateFilter) {
+        Pageable pageable = PageRequest.of(offset, pageSize, Sort.by(sortBy).ascending());
+        return loanRepository.findByReturnDateBefore(returnDateFilter, pageable);
     }
 }

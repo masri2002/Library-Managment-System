@@ -1,6 +1,8 @@
 package org.digitinary.traninng.librarymanagmentsystem.controller;
 
 import jakarta.validation.Valid;
+import org.digitinary.traninng.librarymanagmentsystem.dto.BookPageDTO;
+import org.digitinary.traninng.librarymanagmentsystem.enums.BookType;
 import org.digitinary.traninng.librarymanagmentsystem.model.BookModel;
 import org.digitinary.traninng.librarymanagmentsystem.service.BookService;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,10 @@ public class BookController {
     public ResponseEntity<String> addBook(@Valid @RequestBody BookModel bookModel) {
         bookService.addBook(bookModel);
         return ResponseEntity.ok("Book added successfully");
+    }
+    @GetMapping("/books")
+    public ResponseEntity<?> getBooksByType(@RequestBody BookPageDTO bookPageDTO) {
+        return ResponseEntity.ok(bookService.getBooksByTypeWithPaginationAndSorting(bookPageDTO));
     }
 
 }

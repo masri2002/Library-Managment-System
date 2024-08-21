@@ -8,6 +8,7 @@ import org.digitinary.traninng.librarymanagmentsystem.entity.User;
 import org.digitinary.traninng.librarymanagmentsystem.mapper.UserMapper;
 import org.digitinary.traninng.librarymanagmentsystem.model.UserModel;
 import org.digitinary.traninng.librarymanagmentsystem.repository.UserRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -27,7 +28,7 @@ public class UserService {
     }
 
     public List<UserModel> getUsers() {
-        return userRepository.findAll().stream()
+        return userRepository.findAll(Sort.by(Sort.Direction.DESC,"firstName")).stream()
                 .map(userMapper::userToUserModel)
                 .collect(Collectors.toList());
     }
