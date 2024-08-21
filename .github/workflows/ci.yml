@@ -1,31 +1,6 @@
-name: Java CI
-
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:latest
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_DB: jpa
-          POSTGRES_USER: ahmad
-          POSTGRES_PASSWORD: root
-        options: >-
-          --health-cmd="pg_isready -U ahmad -d jpa"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
 
     steps:
     - name: Checkout code
