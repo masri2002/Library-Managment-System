@@ -1,17 +1,21 @@
 package org.digitinary.traninng.librarymanagmentsystem.unit;
 
 
+import org.digitinary.traninng.librarymanagmentsystem.LibraryManagementSystemApplication;
 import org.digitinary.traninng.librarymanagmentsystem.entity.Loan;
 import org.digitinary.traninng.librarymanagmentsystem.entity.User;
 import org.digitinary.traninng.librarymanagmentsystem.mapper.UserMapper;
 import org.digitinary.traninng.librarymanagmentsystem.model.UserModel;
 import org.digitinary.traninng.librarymanagmentsystem.repository.UserRepository;
+import org.digitinary.traninng.librarymanagmentsystem.service.BookService;
 import org.digitinary.traninng.librarymanagmentsystem.service.LoanService;
 import org.digitinary.traninng.librarymanagmentsystem.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDate;
 import java.util.HashSet;

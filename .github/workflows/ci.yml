@@ -22,39 +22,40 @@ jobs:
           POSTGRES_USER: ahmad
           POSTGRES_PASSWORD: root
         options: >-
-          --health-cmd="pg_isready -U ahmad -d jpa"
+          --health-cmd="pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
 
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup Java JDK
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: 'maven'
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up PostgreSQL Database Connection
-      run: |
-        echo "spring.datasource.url=${{ secrets.DB_URL }}" >> src/main/resources/application.properties
-        echo "spring.datasource.username=${{ secrets.DB_USERNAME }}" >> src/main/resources/application.properties
-        echo "spring.datasource.password=${{ secrets.DB_PASSWORD }}" >> src/main/resources/application.properties
-        echo "spring.mail.host=${{ secrets.MAIL_HOST }}" >> src/main/resources/application.properties
-        echo "spring.mail.port=${{ secrets.MAIL_PORT }}" >> src/main/resources/application.properties
-        echo "spring.mail.username=${{ secrets.MAIL_USERNAME }}" >> src/main/resources/application.properties
-        echo "spring.mail.password=${{ secrets.MAIL_PASSWORD }}" >> src/main/resources/application.properties
+      - name: Set up Java JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
 
-    - name: Build with Maven
-      run: mvn clean install -B
+      - name: Set environment variables
+        run: |
+          echo "SPRING_DATASOURCE_URL=${{ secrets.DB_URL }}" >> $GITHUB_ENV
+          echo "SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }}" >> $GITHUB_ENV
+          echo "SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
+          echo "SPRING_MAIL_HOST=${{ secrets.MAIL_HOST }}" >> $GITHUB_ENV
+          echo "SPRING_MAIL_PORT=${{ secrets.MAIL_PORT }}" >> $GITHUB_ENV
+          echo "SPRING_MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> $GITHUB_ENV
+          echo "SPRING_MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> $GITHUB_ENV
 
-    - name: Run tests
-      run: mvn test -X
+      - name: Build with Maven
+        run: mvn clean install -B
 
-    - name: Upload JUnit test results
-      uses: actions/upload-artifact@v3
-      with:
-        name: junit-results
-        path: target/surefire-reports
+      - name: Run tests with Debug Logging
+        run: mvn test -X
+
+      - name: Upload JUnit test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: junit-results
+          path: target/surefire-reports

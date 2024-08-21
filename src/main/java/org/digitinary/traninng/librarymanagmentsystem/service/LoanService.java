@@ -22,7 +22,8 @@ public class LoanService {
  private final UserMapper userMapper;
  private final BookMapper bookMapper;
  private  EventManager eventManager;
-private EmailNotificationService emailNotificationService;
+ private EmailNotificationService emailNotificationService;
+
     public LoanService(LoanRepository loanRepository, BookService bookService, UserMapper userMapper, BookMapper bookMapper, EmailNotificationService emailNotificationService) {
         this.loanRepository = loanRepository;
         this.bookService = bookService;

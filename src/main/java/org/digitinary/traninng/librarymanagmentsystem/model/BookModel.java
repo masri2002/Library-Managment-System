@@ -20,6 +20,7 @@ public class BookModel {
     private String isbn;
     @NotNull(message = "book should have type")
     private BookType bookType;
+
     private boolean inStock;
 
 
