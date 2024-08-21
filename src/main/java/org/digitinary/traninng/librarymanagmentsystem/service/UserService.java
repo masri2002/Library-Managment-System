@@ -28,7 +28,7 @@ public class UserService {
     }
 
     public List<UserModel> getUsers() {
-        return userRepository.findAll(Sort.by(Sort.Direction.DESC,"firstName")).stream()
+        return userRepository.findAll().stream()
                 .map(userMapper::userToUserModel)
                 .collect(Collectors.toList());
     }

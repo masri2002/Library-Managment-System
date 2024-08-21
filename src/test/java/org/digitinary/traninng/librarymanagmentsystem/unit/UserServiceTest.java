@@ -47,16 +47,17 @@ public class UserServiceTest {
 
     @Test
     void testGetUsers() {
-
         User user = new User(1L, "John Doe", "john.doe@example.com", "1234567890");
         UserModel userModel = new UserModel(1, "John Doe", "john.doe@example.com", "1234567890");
+
+        // Mock the behavior of the repository and mapper
         when(userRepository.findAll()).thenReturn(Stream.of(user).collect(Collectors.toList()));
         when(userMapper.userToUserModel(user)).thenReturn(userModel);
 
-
+        // Act: Call the service method to get the list of user models
         List<UserModel> result = userService.getUsers();
 
-
+        // Assert: Verify the results and interactions
         assertEquals(1, result.size());
         assertEquals(userModel, result.get(0));
         verify(userRepository, times(1)).findAll();
