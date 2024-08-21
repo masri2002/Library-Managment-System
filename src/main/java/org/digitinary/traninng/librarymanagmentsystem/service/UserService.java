@@ -32,6 +32,11 @@ public class UserService {
                 .map(userMapper::userToUserModel)
                 .collect(Collectors.toList());
     }
+    public List<UserModel> getUsersSortedByName() {
+        return userRepository.findAllByOrderByNameAsc().stream()
+                .map(userMapper::userToUserModel)
+                .collect(Collectors.toList());
+    }
     public UserModel addUser(UserModel userModel) {
         userRepository.save(userMapper.userModelToUser(userModel));
         return userModel;
