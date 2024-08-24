@@ -9,6 +9,7 @@ import org.digitinary.traninng.librarymanagmentsystem.model.BookModel;
 import org.digitinary.traninng.librarymanagmentsystem.repository.BookRepository;
 
 
+import org.digitinary.traninng.librarymanagmentsystem.util.BookSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -82,6 +83,13 @@ private final BookMapper bookMapper;
 
     public void UpdateBook(Book book){
         bookRepository.save(book);
+    }
+
+    public List<BookModel> getBooksWhereAuthorNameLike(String name){
+        return bookRepository.findAll(BookSpecification.getBookWithAuthorNameLike(name),
+                Sort.by("author")).stream().map(bookMapper::bookToBookModel).collect(
+                        Collectors.toList()
+        );
     }
 
 }

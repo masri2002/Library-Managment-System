@@ -1,6 +1,7 @@
 package org.digitinary.traninng.librarymanagmentsystem.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ public class User {
     private String name;
     private String email;
     private String phoneNumber;
+    @JsonManagedReference
     private Set<Loan> loans;
     public User(Long id, String name, String email, String phoneNumber) {
         this.id = id;

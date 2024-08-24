@@ -7,6 +7,8 @@ import org.digitinary.traninng.librarymanagmentsystem.mapper.BookMapper;
 import org.digitinary.traninng.librarymanagmentsystem.model.BookModel;
 import org.digitinary.traninng.librarymanagmentsystem.repository.BookRepository;
 import org.digitinary.traninng.librarymanagmentsystem.service.BookService;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -14,16 +16,20 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class BookServiceTest {
+
+    @InjectMocks
+    private BookService bookService;
 
     @Mock
     private BookRepository bookRepository;
@@ -31,13 +37,17 @@ public class BookServiceTest {
     @Mock
     private BookMapper bookMapper;
 
-    @InjectMocks
-    private BookService bookService;
+
+
 
     public BookServiceTest() {
         MockitoAnnotations.openMocks(this);
     }
 
+    @BeforeAll
+    static void setUpBeforeClass() throws Exception {
+        System.out.println("Hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+    }
     @Test
     void testGetAllBooks() {
 
@@ -63,9 +73,7 @@ public class BookServiceTest {
         Book book = new Book("Title", "Author", "Publisher", "ISBN", BookType.FICTION, true);
         when(bookMapper.bookModelToBook(bookModel)).thenReturn(book);
 
-
         bookService.addBook(bookModel);
-
 
         verify(bookMapper, times(1)).bookModelToBook(bookModel);
         verify(bookRepository, times(1)).save(book);
@@ -76,13 +84,13 @@ public class BookServiceTest {
 
         Long id = 1L;
         Book book = new Book("Title", "Author", "Publisher", "ISBN", BookType.FICTION, true);
+
         BookModel bookModel = new BookModel(id, "Title", "Author", "Publisher", "ISBN", BookType.FICTION, true);
+
         when(bookRepository.findById(id)).thenReturn(Optional.of(book));
         when(bookMapper.bookToBookModel(book)).thenReturn(bookModel);
 
-
         BookModel result = bookService.getBookById(id);
-
 
         assertEquals(bookModel, result);
         verify(bookRepository, times(1)).findById(id);
@@ -109,5 +117,21 @@ public class BookServiceTest {
         bookService.deleteBookById(id);
 
         verify(bookRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    void testGetAllBooksSortedByField(){
+        List<BookModel> books = new ArrayList<>();
+
+        books.add(bookMapper.bookToBookModel(new Book("Unit Test","Ahmad","Saleem","778844",BookType.FICTION,true)));
+
+        when(bookService.getAllBooksSortedByField("title")).thenReturn(books);
+
+        assertEquals(books, bookService.getAllBooksSortedByField("title"));
+    }
+
+    @AfterAll
+    static void AfterAll(){
+        System.out.println("Byeeeeeeeeeeeeeeeeeeeeeeeeeeee");
     }
 }

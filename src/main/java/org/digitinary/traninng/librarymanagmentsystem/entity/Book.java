@@ -1,5 +1,6 @@
 package org.digitinary.traninng.librarymanagmentsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import org.digitinary.traninng.librarymanagmentsystem.enums.BookType;
@@ -16,6 +17,7 @@ public class Book {
        private String author;
        private String publisher;
        private String isbn;
+       @JsonBackReference
        private Set<Loan> loans = new HashSet<>();
        private BookType bookType;
        private boolean inStock;

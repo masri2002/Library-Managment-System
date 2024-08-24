@@ -50,14 +50,13 @@ public class UserServiceTest {
         User user = new User(1L, "John Doe", "john.doe@example.com", "1234567890");
         UserModel userModel = new UserModel(1, "John Doe", "john.doe@example.com", "1234567890");
 
-        // Mock the behavior of the repository and mapper
+
         when(userRepository.findAll()).thenReturn(Stream.of(user).collect(Collectors.toList()));
         when(userMapper.userToUserModel(user)).thenReturn(userModel);
 
-        // Act: Call the service method to get the list of user models
+
         List<UserModel> result = userService.getUsers();
 
-        // Assert: Verify the results and interactions
         assertEquals(1, result.size());
         assertEquals(userModel, result.get(0));
         verify(userRepository, times(1)).findAll();
@@ -79,7 +78,7 @@ public class UserServiceTest {
     }
     @Test
     public void updateLoanDate_shouldUpdateLoanReturnDate() {
-        // Arrange
+
         Long userId = 1L;
         Long loanId = 2L;
         LocalDate newReturnDate = LocalDate.of(2024, 8, 31);
@@ -97,27 +96,26 @@ public class UserServiceTest {
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
-        // Act
+
         userService.updateLoanDate(userId, loanId, newReturnDate);
 
-        // Assert
+
         verify(userRepository).findById(userId);
         verify(loanService).updateLoan(loan);
 
-        // Check if the loan's return date was updated
         assert loan.getReturnDate().equals(newReturnDate);
     }
 
     @Test
     public void updateLoanDate_shouldThrowExceptionWhenUserNotFound() {
-        // Arrange
+
         Long userId = 1L;
         Long loanId = 2L;
         LocalDate newReturnDate = LocalDate.of(2024, 8, 31);
 
         when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        // Act & Assert
+
         RuntimeException thrown =
                 org.junit.jupiter.api.Assertions.assertThrows(RuntimeException.class, () ->
                         userService.updateLoanDate(userId, loanId, newReturnDate)
@@ -141,7 +139,6 @@ public class UserServiceTest {
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
-        // Act & Assert
         RuntimeException thrown =
                 org.junit.jupiter.api.Assertions.assertThrows(RuntimeException.class, () ->
                         userService.updateLoanDate(userId, loanId, newReturnDate)

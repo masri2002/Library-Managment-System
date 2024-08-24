@@ -8,6 +8,7 @@ import org.digitinary.traninng.librarymanagmentsystem.entity.User;
 import org.digitinary.traninng.librarymanagmentsystem.mapper.UserMapper;
 import org.digitinary.traninng.librarymanagmentsystem.model.UserModel;
 import org.digitinary.traninng.librarymanagmentsystem.repository.UserRepository;
+import org.digitinary.traninng.librarymanagmentsystem.util.UserSpecification;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -69,5 +70,15 @@ public class UserService {
 
         loanService.updateLoan(loan);
     }
+    public List<User> getUsersWithSpicificEmailType(String emailType) {
+        return userRepository.findAll(UserSpecification.hasEmailLike(emailType),Sort.by("name"));
+    }
+    public List<User> getUsersWithSpicificName(String name) {
+        return userRepository.findAll(UserSpecification.hasNameLike(name),Sort.by("email"));
+    }
+    public List<User> getUsersWithSpicificPhoneCode(String code) {
+        return userRepository.findAll(UserSpecification.hasNameLike(code),Sort.by("name").descending());
+    }
+
 
 }

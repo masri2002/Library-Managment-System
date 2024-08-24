@@ -1,6 +1,7 @@
 package org.digitinary.traninng.librarymanagmentsystem.service;
 
 import jakarta.transaction.Transactional;
+import org.digitinary.traninng.librarymanagmentsystem.dto.LoanPageDto;
 import org.digitinary.traninng.librarymanagmentsystem.entity.Book;
 import org.digitinary.traninng.librarymanagmentsystem.entity.Loan;
 import org.digitinary.traninng.librarymanagmentsystem.mapper.BookMapper;
@@ -25,7 +26,7 @@ public class LoanService {
  private final BookService bookService;
  private final UserMapper userMapper;
  private final BookMapper bookMapper;
- private  EventManager eventManager;
+ private final EventManager eventManager;
 
 
     public LoanService(LoanRepository loanRepository, BookService bookService, UserMapper userMapper, BookMapper bookMapper, EmailNotificationService emailNotificationService) {
@@ -69,12 +70,11 @@ public class LoanService {
 
     public void checkAndNotifyOverdueLoans() {
         List<Loan> overdueLoans = loanRepository.findByReturnDateBefore(LocalDate.now());
-
         overdueLoans.forEach(eventManager::notifySubscribers);
     }
 
-    public Page<Loan> getLoansWithPaginationAndSorting(int offset, int pageSize, String sortBy, LocalDate returnDateFilter) {
-        Pageable pageable = PageRequest.of(offset, pageSize, Sort.by(sortBy).ascending());
-        return loanRepository.findByReturnDateBefore(returnDateFilter, pageable);
+    public Page<Loan> getLoansWithPaginationAndSorting(LoanPageDto pageDto) {
+        Pageable pageable = PageRequest.of(pageDto.getOffset(), pageDto.getPageSize(), Sort.by(pageDto.getSortFiled()).ascending());
+        return loanRepository.findByReturnDateBefore(LocalDate.now(), pageable);
     }
 }

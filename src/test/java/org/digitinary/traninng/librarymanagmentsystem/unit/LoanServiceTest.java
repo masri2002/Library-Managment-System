@@ -52,14 +52,13 @@ public class LoanServiceTest {
 
     @Test
     public void createLoan_shouldThrowExceptionWhenBookNotInStock() {
-        // Arrange
+
         Long bookId = 1L;
         UserModel userModel = new UserModel();
         Loan loan = new Loan();
 
         when(bookService.isInStock(bookId)).thenReturn(false);
 
-        // Act & Assert
         RuntimeException thrown = assertThrows(RuntimeException.class, () ->
                 loanService.createLoan(loan, userModel, bookId)
         );
@@ -69,27 +68,27 @@ public class LoanServiceTest {
 
     @Test
     public void getLoanById_shouldReturnLoan() {
-        // Arrange
+
         Long loanId = 1L;
         Loan loan = new Loan();
 
         when(loanRepository.findById(loanId)).thenReturn(Optional.of(loan));
 
-        // Act
+
         Loan result = loanService.getLoanById(loanId);
 
-        // Assert
+
         assertEquals(loan, result);
     }
 
     @Test
     public void getLoanById_shouldThrowExceptionWhenLoanNotFound() {
-        // Arrange
+
         Long loanId = 1L;
 
         when(loanRepository.findById(loanId)).thenReturn(Optional.empty());
 
-        // Act & Assert
+
         RuntimeException thrown = assertThrows(RuntimeException.class, () ->
                 loanService.getLoanById(loanId)
         );
@@ -99,7 +98,7 @@ public class LoanServiceTest {
 
     @Test
     public void deleteLoanById_shouldDeleteLoanAndUpdateBook() {
-        // Arrange
+
         Long loanId = 1L;
         Loan loan = new Loan();
         Book book = new Book();
@@ -108,23 +107,22 @@ public class LoanServiceTest {
         when(loanRepository.findById(loanId)).thenReturn(Optional.of(loan));
         doNothing().when(bookService).UpdateBook(any(Book.class)); // Handle void method
 
-        // Act
+
         loanService.deleteLoanById(loanId);
 
-        // Assert
+
         verify(loanRepository).delete(loan);
         verify(bookService).UpdateBook(book);
     }
 
     @Test
     public void updateLoan_shouldUpdateLoan() {
-        // Arrange
+
         Loan loan = new Loan();
 
-        // Act
+
         loanService.updateLoan(loan);
 
-        // Assert
         verify(loanRepository).save(loan);
     }
 }

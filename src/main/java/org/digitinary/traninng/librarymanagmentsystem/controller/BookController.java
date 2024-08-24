@@ -29,5 +29,11 @@ public class BookController {
     public ResponseEntity<?> getBooksByType(@RequestBody BookPageDTO bookPageDTO) {
         return ResponseEntity.ok(bookService.getBooksByTypeWithPaginationAndSorting(bookPageDTO));
     }
+    @GetMapping("/{author}")
+    public ResponseEntity<?> getBooksWhereAuthorNameLike(@PathVariable String author){
+        return ResponseEntity.ok(
+                bookService.getBooksWhereAuthorNameLike(author)
+        );
+    }
 
 }

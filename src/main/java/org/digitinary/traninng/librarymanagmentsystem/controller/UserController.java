@@ -30,4 +30,8 @@ public class UserController {
         userService.loanBook(uId,bId,loan);
         return ResponseEntity.ok("Book Loaned");
      }
+    @GetMapping("/email-type/{type}")
+    public List<User> getGmailUsers(@PathVariable String type) {
+        return userService.getUsersWithSpicificEmailType(type);
+    }
 }

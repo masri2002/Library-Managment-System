@@ -1,5 +1,7 @@
 package org.digitinary.traninng.librarymanagmentsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +12,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Loan {
  private Long id;
+ @JsonBackReference
  private User user;
+ @JsonManagedReference
  private Book book;
  private LocalDate formDate;
  private LocalDate returnDate;

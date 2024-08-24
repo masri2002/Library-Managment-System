@@ -12,4 +12,5 @@ import java.util.*;
 public interface LoanRepository extends JpaRepository<Loan, Long> {
     Page<Loan> findByReturnDateBefore(LocalDate returnDate, Pageable pageable);
     List<Loan> findByReturnDateBefore(LocalDate date);
+
 }
