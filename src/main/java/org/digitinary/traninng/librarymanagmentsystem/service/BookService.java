@@ -84,9 +84,9 @@ private final BookMapper bookMapper;
         bookRepository.save(book);
     }
 
-    public List<BookModel> getBooksWhereAuthorNameLike(String name){
-        return bookRepository.findAll(BookSpecification.getBookWithAuthorNameLike(name),
-                Sort.by("author")).stream().map(bookMapper::bookToBookModel).collect(
+    public List<BookModel> getBooksWhereAuthorNameLike(String name,BookPageDTO pageDTO){
+        Pageable pageable = PageRequest.of(pageDTO.getOffset(), pageDTO.getPageSize(),Sort.by(pageDTO.getSortFiled()));
+        return bookRepository.findAll(BookSpecification.getBookWithAuthorNameLike(name),pageable).stream().map(bookMapper::bookToBookModel).collect(
                         Collectors.toList()
         );
     }

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="1" author="Ahmad Al-Masri">
+    <createTable tableName="books">
+        <column name="id" type="bigint">
+            <constraints primaryKey="true" nullable="false"/>
+        </column>
+        <column name="book_name" type="varchar(255)">
+            <constraints nullable="false"/>
+        </column>
+        <column name="author_name" type="varchar(255)">
+            <constraints nullable="false"/>
+        </column>
+        <column name="publisher_name" type="varchar(255)"/>
+        <column name="isbn" type="varchar(20)">
+            <constraints nullable="false"/>
+        </column>
+        <column name="book_type" type="varchar(50)">
+            <constraints nullable="false"/>
+        </column>
+        <column name="available" type="boolean">
+            <constraints nullable="false"/>
+        </column>
+    </createTable>
+        <createSequence sequenceName="book_id_generator" incrementBy="1" startValue="1"/>
+    </changeSet>
+    <changeSet id="2" author="Ahmad Al-Masri">
+        <createTable tableName="users">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" type="varchar(20)"/>
+        </createTable>
+
+
+        <createSequence sequenceName="User_id_Generation" incrementBy="1" startValue="1"/>
+    </changeSet>
+    <changeSet id="3" author="Ahmad Al-Masri">
+        <createTable tableName="loans">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="from_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="return_date" type="date"/>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="book_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="loans"
+                baseColumnNames="user_id"
+                constraintName="fk_loans_user"
+                referencedTableName="users"
+                referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint
+                baseTableName="loans"
+                baseColumnNames="book_id"
+                constraintName="fk_loans_book"
+                referencedTableName="books"
+                referencedColumnNames="id"/>
+    </changeSet>
+    <changeSet id="5" author="Ahmad Al-Masri">
+       <renameColumn tableName="loans" oldColumnName="return_date" newColumnName="date_return"
+      />
+    </changeSet>
+    <changeSet id="6" author="Ahmad Al-Masri">
+        <renameColumn tableName="books" oldColumnName="book_name" newColumnName="name_book"/>
+    </changeSet>
+
+</databaseChangeLog>

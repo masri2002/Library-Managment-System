@@ -1,6 +1,7 @@
 package org.digitinary.traninng.librarymanagmentsystem.controller;
 
 import jakarta.validation.Valid;
+import org.digitinary.traninng.librarymanagmentsystem.dto.UserPageDto;
 import org.digitinary.traninng.librarymanagmentsystem.entity.Loan;
 import org.digitinary.traninng.librarymanagmentsystem.model.UserModel;
 import org.digitinary.traninng.librarymanagmentsystem.service.UserService;
@@ -28,8 +29,16 @@ public class UserController {
         userService.loanBook(uId,bId,loan);
         return ResponseEntity.ok("Book Loaned");
      }
-    @GetMapping("/email-type/{type}")
-    public ResponseEntity<?> getGmailUsers(@PathVariable String type) {
-        return ResponseEntity.ok(userService.getUsersWithSpicificEmailType(type));
+    @PostMapping("/email-type/{type}")
+    public ResponseEntity<?> getGmailUsers(
+            @PathVariable String type,
+            @RequestBody UserPageDto pageDto) {
+
+        if (pageDto.getSortFiled() == null || pageDto.getSortFiled().isEmpty()) {
+            throw new IllegalArgumentException("Sort field must not be null or empty");
+        }
+
+        return ResponseEntity.ok(userService.getUsersWithSpecificEmailType(pageDto, type));
     }
+
 }

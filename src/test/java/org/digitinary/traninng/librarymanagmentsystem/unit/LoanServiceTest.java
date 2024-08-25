@@ -47,6 +47,7 @@ public class LoanServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+
     }
 
 
@@ -64,6 +65,7 @@ public class LoanServiceTest {
         );
 
         assertEquals("Book Already Loaned", thrown.getMessage());
+
     }
 
     @Test
@@ -119,7 +121,6 @@ public class LoanServiceTest {
     public void updateLoan_shouldUpdateLoan() {
 
         Loan loan = new Loan();
-
 
         loanService.updateLoan(loan);
 

@@ -2,25 +2,31 @@ package org.digitinary.traninng.librarymanagmentsystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.digitinary.traninng.librarymanagmentsystem.enums.BookType;
 
 import java.util.HashSet;
 import java.util.Set;
 
-@NoArgsConstructor
+
 @Entity
 @Table(name = "books")
+
 public class Book {
-       private Long id;
-       private String title;
-       private String author;
-       private String publisher;
-       private String isbn;
-       @JsonBackReference
-       private Set<Loan> loans = new HashSet<>();
-       private BookType bookType;
-       private boolean inStock;
+    private Long id;
+    private String author;
+    private String title;
+    private String isbn;
+    private String publisher;
+    @JsonBackReference
+    private Set<Loan> loans;
+    private BookType bookType;
+    private boolean inStock;
+
+    public Book() {
+
+    }
 
     public Book(String title, String author, String publisher, String isbn, BookType bookType, boolean inStock) {
         this.title = title;

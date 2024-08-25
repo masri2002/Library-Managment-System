@@ -25,15 +25,15 @@ public class BookController {
         bookService.addBook(bookModel);
         return ResponseEntity.ok("Book added successfully");
     }
-    @GetMapping("/books")
+    @PostMapping("/books")
     public ResponseEntity<?> getBooksByType(@RequestBody BookPageDTO bookPageDTO) {
         return ResponseEntity.ok(bookService.getBooksByTypeWithPaginationAndSorting(bookPageDTO));
     }
-    @GetMapping("/{author}")
-    public ResponseEntity<?> getBooksWhereAuthorNameLike(@PathVariable String author){
+    @PostMapping("/{author}")
+    public ResponseEntity<?> getBooksWhereAuthorNameLike(@PathVariable String author,BookPageDTO pageDTO){
         return ResponseEntity.ok(
-                bookService.getBooksWhereAuthorNameLike(author)
-        );
+                bookService.getBooksWhereAuthorNameLike(author,pageDTO));
+
     }
 
 }
