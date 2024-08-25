@@ -1,26 +1,24 @@
 package org.digitinary.traninng.librarymanagmentsystem.service;
 
 
-import lombok.Setter;
 import org.digitinary.traninng.librarymanagmentsystem.entity.Book;
 import org.digitinary.traninng.librarymanagmentsystem.entity.Loan;
 import org.digitinary.traninng.librarymanagmentsystem.entity.User;
 import org.digitinary.traninng.librarymanagmentsystem.mapper.UserMapper;
 import org.digitinary.traninng.librarymanagmentsystem.model.UserModel;
 import org.digitinary.traninng.librarymanagmentsystem.repository.UserRepository;
-import org.digitinary.traninng.librarymanagmentsystem.util.UserSpecification;
+import org.digitinary.traninng.librarymanagmentsystem.repository.specification.UserSpecification;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService {
- private final UserRepository userRepository;
- private final UserMapper userMapper;
-    private final LoanService loanService;
+  private final UserRepository userRepository;
+  private final UserMapper userMapper;
+  private final LoanService loanService;
 
     public UserService(UserRepository userRepository, UserMapper userMapper,  LoanService loanService) {
         this.userRepository = userRepository;
@@ -70,15 +68,20 @@ public class UserService {
 
         loanService.updateLoan(loan);
     }
-    public List<User> getUsersWithSpicificEmailType(String emailType) {
-        return userRepository.findAll(UserSpecification.hasEmailLike(emailType),Sort.by("name"));
+    public List<UserModel> getUsersWithSpicificEmailType(String emailType) {
+        return userRepository.findAll(UserSpecification.hasEmailLike(emailType),Sort.by("name"))
+                .stream().map(userMapper::userToUserModel).toList();
     }
-    public List<User> getUsersWithSpicificName(String name) {
-        return userRepository.findAll(UserSpecification.hasNameLike(name),Sort.by("email"));
+    public List<UserModel> getUsersWithSpicificName(String name) {
+        return userRepository.findAll(UserSpecification.hasNameLike(name),Sort.by("email"))
+                .stream().map(userMapper::userToUserModel).toList();
     }
-    public List<User> getUsersWithSpicificPhoneCode(String code) {
-        return userRepository.findAll(UserSpecification.hasNameLike(code),Sort.by("name").descending());
+    public List<UserModel> getUsersWithSpicificPhoneCode(String code) {
+        return userRepository.findAll(UserSpecification.hasPhoneLike(code),Sort.by("name").descending())
+                .stream().map(userMapper::userToUserModel).toList();
     }
+
+
 
 
 }

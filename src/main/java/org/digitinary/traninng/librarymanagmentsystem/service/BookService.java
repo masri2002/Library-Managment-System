@@ -3,13 +3,12 @@ package org.digitinary.traninng.librarymanagmentsystem.service;
 
 import org.digitinary.traninng.librarymanagmentsystem.dto.BookPageDTO;
 import org.digitinary.traninng.librarymanagmentsystem.entity.Book;
-import org.digitinary.traninng.librarymanagmentsystem.enums.BookType;
 import org.digitinary.traninng.librarymanagmentsystem.mapper.BookMapper;
 import org.digitinary.traninng.librarymanagmentsystem.model.BookModel;
 import org.digitinary.traninng.librarymanagmentsystem.repository.BookRepository;
 
 
-import org.digitinary.traninng.librarymanagmentsystem.util.BookSpecification;
+import org.digitinary.traninng.librarymanagmentsystem.repository.specification.BookSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

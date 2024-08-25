@@ -2,13 +2,11 @@ package org.digitinary.traninng.librarymanagmentsystem.controller;
 
 import jakarta.validation.Valid;
 import org.digitinary.traninng.librarymanagmentsystem.entity.Loan;
-import org.digitinary.traninng.librarymanagmentsystem.entity.User;
 import org.digitinary.traninng.librarymanagmentsystem.model.UserModel;
 import org.digitinary.traninng.librarymanagmentsystem.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -31,7 +29,7 @@ public class UserController {
         return ResponseEntity.ok("Book Loaned");
      }
     @GetMapping("/email-type/{type}")
-    public List<User> getGmailUsers(@PathVariable String type) {
-        return userService.getUsersWithSpicificEmailType(type);
+    public ResponseEntity<?> getGmailUsers(@PathVariable String type) {
+        return ResponseEntity.ok(userService.getUsersWithSpicificEmailType(type));
     }
 }

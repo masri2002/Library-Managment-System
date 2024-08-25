@@ -11,8 +11,8 @@
     <groupId>org.digitinary.traninng</groupId>
     <artifactId>Library-Managment-System</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Library Managment System</name>
-    <description>Library Managment System</description>
+    <name>Library Management System</name>
+    <description>Library Management System</description>
     <url/>
     <licenses>
         <license/>
@@ -136,7 +136,6 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-                    <!-- configuration settings -->
                 </configuration>
             </plugin>
 

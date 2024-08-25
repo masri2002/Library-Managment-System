@@ -1,4 +1,4 @@
-package org.digitinary.traninng.librarymanagmentsystem.util;
+package org.digitinary.traninng.librarymanagmentsystem.repository.specification;
 
 import org.digitinary.traninng.librarymanagmentsystem.entity.User;
 import org.springframework.data.jpa.domain.Specification;
