@@ -26,7 +26,7 @@ This is a Library Management System application that helps manage books, users, 
 ## Technologies
 
 - **Backend:** [Java](https://www.java.com/), [Spring Boot](https://spring.io/projects/spring-boot)
-- **Database:** [MySQL](https://www.mysql.com/)
+- **Database:** [Postgres]
 - **Build Tool:** [Maven](https://maven.apache.org/)
 - **Testing:** [JUnit](https://junit.org/junit5/)
 
